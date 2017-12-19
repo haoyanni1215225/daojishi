@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>钟表</title>
+	<style>
+
+	body{
+		background:#333 ;
+		background-image: url('../../../图片/24.webp');
+		background-repeat: no-repeat;
+		background-size: 100% 800px;
+	}
+		.text{
+			width: 100%;
+			height: 50px;
+			font-size: 32px;
+			text-align: center;
+			line-height: 30px;
+			color: #000;
+			font-weight: 700;
+			margin: 50px 0;
+		}
+		.beijing{
+			width: 200px;
+			height: 200px;
+			margin: 0 auto;
+			/* background: yellowgreen; */
+			border-radius: 10%;
+			/* background-image: url('../../../063f0bab2d75db64e4cb45cd0d715753755247ff643cb-mnrIJU_fw658.webp');
+			background-repeat: no-repeat;
+			background-size: cover; */
+		}
+		.plate img{
+			width: 100%;
+			height: 100%;
+			border-radius: 50%;
+
+		}
+		.plate{
+			width: 180px;
+			height: 180px;
+			background: #fff;
+			border-radius: 50%;
+			margin: 10px;
+			float: left;
+			position: relative;
+			left: 0;
+			top: 0;
+			border: 3px solid #333;
+		}
+		.number{
+			width: 20px;
+			height: 20px;
+			position: absolute;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			margin: auto;
+			text-align: center;
+		}
+	</style>
+<body>
+	<div class="text">
+		距离2018年元旦倒计时
+		<span class="day"></span>天
+		<span class="hour"></span>时
+		<span class="min"></span>分
+		<span class="sec"></span>秒
+	</div>
+	<div class="beijing">
+		<div class="plate"><img src="../../../图片/12.webp" alt=""></div>
+	</div>
+</body>
+<script>
+	// 距离2018年元旦倒计时
+	let day=document.querySelector(".day");
+	let hour=document.querySelector(".hour");
+	let min=document.querySelector(".min");
+	let sec=document.querySelector(".sec");
+
+	let target=new Date(2018,0,1,0,0,0);
+	let targettime=target.getTime();
+
+	function change(){
+	let now=new Date();
+	let nowtime=now.getTime();
+	let cha= targettime-nowtime;
+
+	let days=Math.floor(cha/(1000*60*60*24));
+	let hours=Math.floor(cha/(1000*60*60))%24;
+	let mins=Math.floor(cha/(1000*60))%60;
+	let secs=Math.floor(cha/1000)%60;
+	day.innerHTML=days;
+	hour.innerHTML=hours;
+	min.innerHTML=mins;
+	sec.innerHTML=secs;
+}	
+	setInterval(function(){
+		change();
+	},1000);
+	
+
+	// 钟表的制作
+	let plate=document.querySelector(".plate");
+	let num=3;
+	for(let i=0;i<60;i++){
+		let kedu=document.createElement("div");
+		let angle=i*6;
+		let height=3;
+		if(i%5===0){
+			height=6;
+			let number=document.createElement("div");
+			number.className="number";
+			number.innerHTML=num;
+			let jiao=i*6;
+			let x=Math.cos(jiao*Math.PI/180)*70;
+			let y=Math.sin(jiao*Math.PI/180)*70;
+			number.style.transform=`translate(${x}px,${y}px)`;
+			num++;
+			if(num>12){
+				num=num%12;
+			}
+			plate.appendChild(number);
+			
+		}
+		kedu.style.cssText="width:3px;height:"+height+"px;background:black;position:absolute;left:89px;top:0;transform-origin:center 90px;transform:rotate("+angle+"deg)";
+		plate.appendChild(kedu);
+	}
+	let hourpointer=document.createElement("div");
+	hourpointer.style.cssText="height:6px;width:50px;background:#000;position:absolute;left:90px;top:87px;transform-origin:left center;";
+	plate.appendChild(hourpointer);
+
+	let minutepointer=document.createElement("div");
+	minutepointer.style.cssText="height:4px;width:60px;background:#000;position:absolute;left:90px;top:88px;transform-origin:left center;";
+	plate.appendChild(minutepointer);
+
+	let secondpointer=document.createElement("div");
+	secondpointer.style.cssText="height:2px;width:70px;background:red;position:absolute;left:90px;top:89px;transform-origin:left center;";
+	plate.appendChild(secondpointer);
+
+	function time(){
+		let now=new Date();
+		let hour=now.getHours();
+		let minute=now.getMinutes();
+		let second=now.getSeconds();
+		hourpointer.style.transform="rotate("+(hour*30-90+minute/2)+"deg)";
+		minutepointer.style.transform="rotate("+(minute*6-90)+"deg)";
+		secondpointer.style.transform="rotate("+(second*6-90)+"deg)";
+	}
+	time();
+	let st=setInterval(function(){
+		time();
+	},1000);
+</script>
+</html>
